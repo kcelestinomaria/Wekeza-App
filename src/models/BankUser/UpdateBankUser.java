@@ -4,6 +4,8 @@ import java.sql.*;
 
 import javax.swing.text.View;
 
+import models.DBConnection;
+
 public class UpdateBankUser {
     
     private String userHere, pass;
@@ -19,15 +21,35 @@ public class UpdateBankUser {
             try {
 
                 // instantiate the DBConnection class to use the connection
-                DbConnection stayconnected = new DbConnection();
+                DBConnection stayconnected = new DBConnection();
                 stayconnected.getConnection();
 
                 // Create the statement object for executing queries
-                Statement stmt = stayconnected.con.createStatement();
+                Statement stmt = ((Object) stayconnected.con).createStatement();
 
                 // Execute the delete statement and assigned number of affected rows
-                numRows = stmt.executeUpdate("UPDATE logins SET password ='" + pass + )
+                numRows = stmt.executeUpdate("UPDATE logins SET password ='" + pass + "'WHERE userName ='" + userHere + "'" );
+                if (numRows > 0) {
+                    System.out.println("Password for"+userHere+" changed successfully");
+                } else {
+                    System.out.println("Password change failed. Try again");
+                    goToUserList.doList();
+                }
+                // Close the connection
+                stayconnected.con.close();
+                goToUserList.doList();
+            } catch (SQLException e) {
+                System.out.println("Error! See below details \n");
+                System.out.println(e);
             }
+        } else {
+            System.out.println("You must provide a username to update user details");
         }
+    }
+
+    public void setBankUserDetails(String user, String pass) {
+        this.userHere = user;
+        this.pass = pass;
+        doUpdate();
     }
 }

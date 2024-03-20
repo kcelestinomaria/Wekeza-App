@@ -1,11 +1,16 @@
 package models.BankUser;
 
-import static models.BankUser.Home.main; // formerly User.Home.main
+//import static models.BankUser.Home.main; // formerly User.Home.main
+
+import static models.BankUser;
+import static Home.main;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+
+import models.DBConnection;
 
 /**
  *
@@ -20,7 +25,7 @@ public class ViewBankUsers {
         //Check if username or password supplied
         try {
             //Instantiate DbConnection class to use the connection
-            DbConnection stayconnected = new DbConnection();
+            DBConnection stayconnected = new DBConnection();
             stayconnected.getConnection();
             //Create the statement object for executing queries
             Statement stmt = stayconnected.con.createStatement();

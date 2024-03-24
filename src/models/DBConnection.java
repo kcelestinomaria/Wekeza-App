@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class DBConnection {
 
-    Connection con;
+    public Connection con;
     
-    Connection getConnection() {
+    public static Connection getConnection() {
         try {
 
             Class.forName("com.mysql.jdbc.Driver");

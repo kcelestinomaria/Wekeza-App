@@ -22,10 +22,10 @@ public class UpdateBankUser {
 
                 // instantiate the DBConnection class to use the connection
                 DBConnection stayconnected = new DBConnection();
-                stayconnected.getConnection();
+                DBConnection.getConnection();
 
                 // Create the statement object for executing queries
-                Statement stmt = ((Object) stayconnected.con).createStatement();
+                Statement stmt =  stayconnected.con.createStatement();
 
                 // Execute the delete statement and assigned number of affected rows
                 numRows = stmt.executeUpdate("UPDATE logins SET password ='" + pass + "'WHERE userName ='" + userHere + "'" );

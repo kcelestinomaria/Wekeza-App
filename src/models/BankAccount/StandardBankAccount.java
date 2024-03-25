@@ -55,7 +55,6 @@ public class StandardBankAccount extends BankAccount {
         return null;
     }
 
-}
 
     // Retrieve a standard account from the database based on account ID
 public static StandardBankAccount getStandardBankAccountById(int accountId) {

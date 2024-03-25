@@ -62,10 +62,10 @@ public abstract class BankAccount {
                 // Create and return the appropriate account object based on the table name
                 if (tableName.equals("standard_accounts")) {
                     double overdraftLimit = resultSet.getDouble("overdraft_limit");
-                    return new StandardAccount(accountId, accountNumber, balance, overdraftLimit);
+                    return new StandardBankAccount(accountId, accountNumber, balance, overdraftLimit);
                 } else if (tableName.equals("savings_accounts")) {
                     double interestRate = resultSet.getDouble("interest_rate");
-                    return new SavingsAccount(accountId, accountNumber, balance, interestRate);
+                    return new SavingsBankAccount(accountId, accountNumber, balance, interestRate);
                 } else if (tableName.equals("investment_accounts")) {
                     String investmentType = resultSet.getString("investment_type");
                     return new InvestmentAccount(accountId, accountNumber, balance, investmentType);

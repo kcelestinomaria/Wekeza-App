@@ -26,7 +26,7 @@ public final class AddBankUser {
             try {
                 //Instantiate DbConnection class to use the connection
                 DBConnection stayconnected = new DBConnection();
-                stayconnected.getConnection();
+                DBConnection.getConnection();
                 //Create the statement object for executing queries
                 Statement stmt = stayconnected.con.createStatement();
                 //Execute the statement

@@ -34,8 +34,8 @@ public class DeleteBankUser {
 
                 // Close the connection
                 stayconnected.con.close();
-                ViewBankUsers goToUserList = ViewBankUsers();
-                goToUserList.doList()
+                ViewBankUsers goToUserList = new ViewBankUsers();
+                goToUserList.doList();
             } catch (SQLException e) {
                 System.out.println("Error! See below details \n");
                 System.out.println(e);

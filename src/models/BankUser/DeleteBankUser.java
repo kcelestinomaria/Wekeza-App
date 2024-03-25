@@ -18,7 +18,7 @@ public class DeleteBankUser {
 
                 // First, instantiate DBConnection class to use the connection
                 DBConnection stayconnected = new DBConnection();
-                stayconnected.getConnection();
+                DBConnection.getConnection();
 
                 // Second, we create the statement object for executing queries
                 Statement stmt = stayconnected.con.createStatement();

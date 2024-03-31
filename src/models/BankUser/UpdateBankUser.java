@@ -1,46 +1,33 @@
 package models.BankUser;
 
-import java.sql.*;
+//import java.sql.*;
 
-import javax.swing.text.View;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import models.DBConnection;
 
 public class UpdateBankUser {
-    
+
     private String userHere, pass;
 
-    ViewBankUsers goToUserList = new ViewBankUsers();
-
-    void doUpdate() {
-
+    public void doUpdate() {
         // check if username is supplied
-        if(userHere != null) {
-
-            int numRows;
-            try {
-
-                // instantiate the DBConnection class to use the connection
-                DBConnection stayconnected = new DBConnection();
-                DBConnection.getConnection();
-
-                // Create the statement object for executing queries
-                Statement stmt =  stayconnected.con.createStatement();
-
-                // Execute the delete statement and assigned number of affected rows
-                numRows = stmt.executeUpdate("UPDATE logins SET password ='" + pass + "'WHERE userName ='" + userHere + "'" );
+        if (userHere != null) {
+            try (Connection connection = DBConnection.getConnection();
+                 PreparedStatement statement = connection.prepareStatement("UPDATE logins SET password = ? WHERE userName = ?")) {
+                statement.setString(1, pass);
+                statement.setString(2, userHere);
+                int numRows = statement.executeUpdate();
                 if (numRows > 0) {
-                    System.out.println("Password for"+userHere+" changed successfully");
+                    System.out.println("Password for " + userHere + " changed successfully");
                 } else {
                     System.out.println("Password change failed. Try again");
-                    goToUserList.doList();
                 }
-                // Close the connection
-                stayconnected.con.close();
-                goToUserList.doList();
             } catch (SQLException e) {
                 System.out.println("Error! See below details \n");
-                System.out.println(e);
+                e.printStackTrace();
             }
         } else {
             System.out.println("You must provide a username to update user details");

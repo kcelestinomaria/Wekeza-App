@@ -11,7 +11,7 @@ public class Login {
     private static final String ADMIN_PASSWORD = "Celestino@Strathmore";
     private static final String ADMIN_ROLE = "Admin";
 
-    public boolean authenticate(String username, String password) {
+    public String authenticate(String username, String password) {
         if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
             return ADMIN_ROLE; // Admin credentials match
         }

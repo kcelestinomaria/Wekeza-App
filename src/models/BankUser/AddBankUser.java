@@ -8,9 +8,11 @@ package models.BankUser;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import models.DBConnection;
+
 /**
  *
- * @author fbarasa
+ * @author celestino
  */
 public final class AddBankUser {
 
@@ -23,8 +25,8 @@ public final class AddBankUser {
    
             try {
                 //Instantiate DbConnection class to use the connection
-                DbConnection stayconnected = new DbConnection();
-                stayconnected.getConnection();
+                DBConnection stayconnected = new DBConnection();
+                DBConnection.getConnection();
                 //Create the statement object for executing queries
                 Statement stmt = stayconnected.con.createStatement();
                 //Execute the statement

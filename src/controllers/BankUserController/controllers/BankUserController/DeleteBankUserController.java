@@ -1,5 +1,5 @@
 package controllers.BankUserController;
 
-public class BankUserController {
+public class DeleteBankUserController {
     
 }

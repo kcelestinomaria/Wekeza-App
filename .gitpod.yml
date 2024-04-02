@@ -3,4 +3,4 @@ ports:
     visibility: private
 
 tasks: 
-  - before: sdk install java 21
+  - before: sdk install java 22-amzn

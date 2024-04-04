@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,11 +51,17 @@ public class AccountsView extends JFrame {
         });
         panel.add(createSavingsBankAccountButton);
 
+        // Combo box for selecting investment type
+        String[] investmentTypes = {"Digital Assets", "Equity", "Government Bond", "Commodities"};
+        JComboBox<String> investmentTypeComboBox = new JComboBox<>(investmentTypes);
+        panel.add(investmentTypeComboBox);
+        
         JButton createInvestmentButton = new JButton("Create An Investment Account");
         createInvestmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createAccount(new InvestmentBankAccount());
+                String selectedInvestmentType = (String) investmentTypeComboBox.getSelectedItem();
+                createAccount(new InvestmentBankAccount(selectedInvestmentType));
             }
         });
         panel.add(createInvestmentButton);

@@ -16,7 +16,8 @@ public class StandardBankAccount extends BankAccount {
     // Constructors
     public StandardBankAccount() {
         super();
-        this.overdraftLimit = overdraftLimit;
+        this.accountType = "A Standard(Checking) Bank Account";
+        this.overdraftLimit = 10000.9998;
     }
 
     // Getters and Setters for overdraftLimit

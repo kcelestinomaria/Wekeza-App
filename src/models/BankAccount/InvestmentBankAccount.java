@@ -5,7 +5,7 @@ public class InvestmentBankAccount extends BankAccount {
     private String investmentType;
 
     // Constructor
-    public InvestmentBankAccount() {
+    public InvestmentBankAccount(String investmentType) {
         super();
         this.investmentType = investmentType;
         this.accountType = "Investment Bank Account";

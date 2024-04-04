@@ -3,12 +3,12 @@ package models.BankAccount;
 public class SavingsBankAccount extends BankAccount {
 
     private static final String TABLE_NAME = "savings_accounts";
-    private static double interestRate;
+    private double interestRate;
 
     // Constructors
     public SavingsBankAccount() {
         super();
-        SavingsBankAccount.interestRate = interestRate;
+        this.interestRate = 9.99;
         this.accountType = "Savings Bank Account";
     }
 

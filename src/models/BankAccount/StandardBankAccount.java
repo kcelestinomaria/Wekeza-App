@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import models.DBConnection;
 
@@ -14,13 +13,13 @@ public class StandardBankAccount extends BankAccount {
     private static final String TABLE_NAME = "standard_bank_account";
     private double overdraftLimit;
 
-    // Additional methods specific to StandardBankAccount
-    public StandardBankAccount(int accountId, int i, double balance, double overdraftLimit) {
-        super(accountId, i, balance);
+    // Constructors
+    public StandardBankAccount() {
+        super();
         this.overdraftLimit = overdraftLimit;
     }
 
-    // Getters & Setters for overdraftLimit
+    // Getters and Setters for overdraftLimit
     public double getOverdraftLimit() {
         return overdraftLimit;
     }
@@ -29,38 +28,11 @@ public class StandardBankAccount extends BankAccount {
         this.overdraftLimit = overdraftLimit;
     }
 
-    public static StandardBankAccount createStandardBankAccount(String accountNumber, double initialBalance,
-            double overdraftLimit) {
+    // Retrieve a standard account from the database based on account ID
+    public static StandardBankAccount getStandardBankAccountById(int accountId) {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
-        try {
-            connection = DBConnection.getConnection();
-            String query = "INSERT INTO " + TABLE_NAME + " (account_number, balance, overdraft_limit) VALUES (?, ?, ?)";
-            statement = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement.setString(1, accountNumber);
-            statement.setDouble(2, initialBalance);
-            statement.setDouble(3, overdraftLimit);
-            statement.executeUpdate();
-            resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                int accountId = resultSet.getInt(1);
-                return new StandardBankAccount(accountId, accountNumber, initialBalance, overdraftLimit);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources(resultSet, statement, connection);
-        }
-        return null;
-    }
-
-
-    // Retrieve a standard account from the database based on account ID
-public static StandardBankAccount getStandardBankAccountById(int accountId) {
-    Connection connection = null;
-    PreparedStatement statement = null;
-    ResultSet resultSet = null;
         try {
             connection = DBConnection.getConnection();
             String query = "SELECT * FROM " + TABLE_NAME + " WHERE account_id = ?";
@@ -68,10 +40,10 @@ public static StandardBankAccount getStandardBankAccountById(int accountId) {
             statement.setInt(1, accountId);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                String accountNumber = resultSet.getString("account_number");
+                long accountNumber = resultSet.getLong("account_number");
                 double balance = resultSet.getDouble("balance");
                 double overdraftLimit = resultSet.getDouble("overdraft_limit");
-                return new StandardBankAccount(accountId, accountNumber, balance, overdraftLimit);
+                return new StandardBankAccount();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,8 +53,7 @@ public static StandardBankAccount getStandardBankAccountById(int accountId) {
         return null;
     }
 
-
-// Update the balance of the standard account in the database
+    // Update the balance of the standard account in the database
     @Override
     public void updateBalance(double newBalance) {
         super.setBalance(newBalance);
@@ -93,20 +64,13 @@ public static StandardBankAccount getStandardBankAccountById(int accountId) {
             String query = "UPDATE " + TABLE_NAME + " SET balance = ? WHERE account_id = ?";
             statement = connection.prepareStatement(query);
             statement.setDouble(1, newBalance);
-            statement.setInt(2, getBankAccountId());
+            statement.setInt(2, (int) getAccountId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeResources(null, statement, connection);
         }
-    }
-
-    // Additional methods specific to StandardAccount
-
-    private int getBankAccountId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBankAccountId'");
     }
 
     // Close resources (result set, statement, connection)
@@ -126,45 +90,45 @@ public static StandardBankAccount getStandardBankAccountById(int accountId) {
         }
     }
 
+    // Other methods specific to StandardBankAccount
     @Override
     public void deposit(double amount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deposit'");
+        double currentBalance = (double) getBalance();
+        updateBalance(currentBalance + amount);
     }
 
     @Override
     public boolean withdraw(double amount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'withdraw'");
+        double currentBalance = (double) getBalance();
+        if (currentBalance - amount >= -overdraftLimit) {
+            updateBalance(currentBalance - amount);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void setAccountId(int accountId2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAccountId'");
+    public void setAccountId(int accountId) {
+        // Not needed for this implementation
     }
 
     @Override
-    public void setAccountNumber(long accountNumber2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAccountNumber'");
+    public void setAccountNumber(long accountNumber) {
+        // Not needed for this implementation
     }
 
     @Override
-    protected Object getBalance() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBalance'");
+    public double getBalance() {
+        return balance;
     }
 
     @Override
-    protected Object getAccountId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountId'");
+    public int getAccountId() {
+        return accountId;
     }
 
     @Override
-    protected Object getAccountNumber() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountNumber'");
+    public long getAccountNumber() {
+        return accountNumber;
     }
 }

@@ -6,72 +6,62 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 
-import models.DBConnection;
-
 public abstract class BankAccount {
-    
+
     protected int accountId;
     protected long accountNumber;
     protected double balance;
+    protected String accountType;
 
     // Generate random values for accountId and accountNumber
-    Random random = new Random();
-    
-    public BankAccount(int accountId, String accountNumber, double balance) {
+    protected Random random = new Random();
+
+    // Constructor
+    protected BankAccount() {
         this.accountId = random.nextInt(1000) + 1000;
         this.accountNumber = Math.abs(random.nextLong());
         this.balance = 10.0; // starting balance - 10.0 $
+        this.accountType = "";
     }
 
-    // Getters, & Setters
+    // Getters and Setters
+    public int getAccountId() {
+        return accountId;
+    }
 
-    // Abstract methods for common functionality e.g deposit & withdraw
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public long getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(long accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    // Abstract methods
     public abstract void updateBalance(double newBalance);
 
-    // Additional methods for account functionality
-
-    // Deposit funds into the account
     public abstract void deposit(double amount);
 
-    // Withdraw funds from the account
     public abstract boolean withdraw(double amount);
 
-
-    // Get account details from the database based on account ID
+    // Additional methods
     public static BankAccount getAccountById(int accountId, String tableName) {
-        Connection con = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            con = DBConnection.getConnection();
-            String query = "SELECT * FROM " + tableName + " WHERE account_id = ?";
-            statement = con.prepareStatement(query);
-            statement.setInt(1, accountId);
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String accountNumber = resultSet.getString("account_number");
-                double balance = resultSet.getDouble("balance");
-                // Create and return the appropriate account object based on the table name
-                if (tableName.equals("standard_accounts")) {
-                    double overdraftLimit = resultSet.getDouble("overdraft_limit");
-                    return new StandardBankAccount(accountId, accountNumber, balance, overdraftLimit);
-                } else if (tableName.equals("savings_accounts")) {
-                    double interestRate = resultSet.getDouble("interest_rate");
-                    return new SavingsBankAccount(accountId, accountNumber, balance, interestRate);
-                } else if (tableName.equals("investment_accounts")) {
-                    String investmentType = resultSet.getString("investment_type");
-                    return new InvestmentBankAccount(accountId, accountNumber, balance, investmentType);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources(resultSet, statement, con);
-        }
-        return null; // Account not found
+        // Implementation in child classes
+        return null;
     }
 
-    // Close resources(result set, statement, connection)
     protected static void closeResources(ResultSet resultSet, PreparedStatement statement, Connection con) {
         try {
             if (resultSet != null) {
@@ -88,24 +78,7 @@ public abstract class BankAccount {
         }
     }
 
-    public void setBalance(double newBalance) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setBalance'");
+    public String getAccountType() {
+        return accountType;
     }
-
-    public abstract void setAccountId(int accountId2);
-
-    public abstract void setAccountNumber(long accountNumber2);
-
-    public Object getAccountType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountType'");
-    }
-
-    protected abstract Object getBalance();
-
-    protected abstract Object getAccountId();
-
-    protected abstract Object getAccountNumber();
-
 }

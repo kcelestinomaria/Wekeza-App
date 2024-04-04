@@ -1,64 +1,43 @@
 package models.BankAccount;
 
 public class InvestmentBankAccount extends BankAccount {
-    
+
     private String investmentType;
 
     // Constructor
-    public InvestmentBankAccount(int accountId, String accountNumber, double balance, String investmentType){
-        super(accountId, accountNumber, balance);
+    public InvestmentBankAccount() {
+        super();
         this.investmentType = investmentType;
+        this.accountType = "Investment Bank Account";
     }
 
     @Override
     public void updateBalance(double newBalance) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateBalance'");
+        this.balance = newBalance;
     }
 
     @Override
     public void deposit(double amount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deposit'");
+        balance += amount;
     }
 
     @Override
     public boolean withdraw(double amount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'withdraw'");
+        if (balance >= amount) {
+            balance -= amount;
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public void setAccountId(int accountId2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAccountId'");
+    // Getters and Setters for investmentType
+    public String getInvestmentType() {
+        return investmentType;
     }
 
-    @Override
-    public void setAccountNumber(long accountNumber2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setAccountNumber'");
+    public void setInvestmentType(String investmentType) {
+        this.investmentType = investmentType;
     }
 
-    @Override
-    protected Object getBalance() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBalance'");
-    }
-
-    @Override
-    protected Object getAccountId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountId'");
-    }
-
-    @Override
-    protected Object getAccountNumber() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccountNumber'");
-    }
-
-    // getters & setters
-
-    // Additional methods specific to InvestmentAccount
+    // Other methods specific to InvestmentBankAccount
 }

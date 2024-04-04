@@ -56,6 +56,12 @@ public abstract class BankAccount {
 
     public abstract boolean withdraw(double amount);
 
+    public abstract boolean deleteAccount();
+
+    public abstract void readAccountDetails();
+
+    public abstract boolean saveAccountDetails();
+
     // Additional methods
     public static BankAccount getAccountById(int accountId, String tableName) {
         // Implementation in child classes

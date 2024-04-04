@@ -15,8 +15,8 @@ public class StandardBankAccount extends BankAccount {
     private double overdraftLimit;
 
     // Additional methods specific to StandardBankAccount
-    public StandardBankAccount(int accountId, String accountNumber, double balance, double overdraftLimit) {
-        super(accountId, accountNumber, balance);
+    public StandardBankAccount(int accountId, int i, double balance, double overdraftLimit) {
+        super(accountId, i, balance);
         this.overdraftLimit = overdraftLimit;
     }
 
@@ -124,5 +124,47 @@ public static StandardBankAccount getStandardBankAccountById(int accountId) {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void deposit(double amount) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deposit'");
+    }
+
+    @Override
+    public boolean withdraw(double amount) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'withdraw'");
+    }
+
+    @Override
+    public void setAccountId(int accountId2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAccountId'");
+    }
+
+    @Override
+    public void setAccountNumber(long accountNumber2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setAccountNumber'");
+    }
+
+    @Override
+    protected Object getBalance() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getBalance'");
+    }
+
+    @Override
+    protected Object getAccountId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAccountId'");
+    }
+
+    @Override
+    protected Object getAccountNumber() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAccountNumber'");
     }
 }

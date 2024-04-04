@@ -4,20 +4,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 
 import models.DBConnection;
 
 public abstract class BankAccount {
     
-    private int accountId;
-    private String accountNumber;
-    private double balance;
+    protected int accountId;
+    protected long accountNumber;
+    protected double balance;
 
-    // Constructor
+    // Generate random values for accountId and accountNumber
+    Random random = new Random();
+    
     public BankAccount(int accountId, String accountNumber, double balance) {
-        this.accountId = accountId;
-        this.accountNumber = accountNumber;
-        this.balance = balance;
+        this.accountId = random.nextInt(1000) + 1000;
+        this.accountNumber = Math.abs(random.nextLong());
+        this.balance = 10.0; // starting balance - 10.0 $
     }
 
     // Getters, & Setters
@@ -28,22 +31,11 @@ public abstract class BankAccount {
     // Additional methods for account functionality
 
     // Deposit funds into the account
-    public void deposit(double amount) {
-        balance += amount;
-        updateBalance(balance);
-    }
+    public abstract void deposit(double amount);
 
     // Withdraw funds from the account
-    public boolean withdraw(double amount) {
+    public abstract boolean withdraw(double amount);
 
-        if (amount <= balance) {
-            balance -= amount;
-            updateBalance(balance);
-            return true; // 
-        } else {
-            return false; // Insufficient funds
-        }
-    }
 
     // Get account details from the database based on account ID
     public static BankAccount getAccountById(int accountId, String tableName) {
@@ -68,7 +60,7 @@ public abstract class BankAccount {
                     return new SavingsBankAccount(accountId, accountNumber, balance, interestRate);
                 } else if (tableName.equals("investment_accounts")) {
                     String investmentType = resultSet.getString("investment_type");
-                    return new InvestmentAccount(accountId, accountNumber, balance, investmentType);
+                    return new InvestmentBankAccount(accountId, accountNumber, balance, investmentType);
                 }
             }
         } catch (SQLException e) {
@@ -100,5 +92,20 @@ public abstract class BankAccount {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setBalance'");
     }
+
+    public abstract void setAccountId(int accountId2);
+
+    public abstract void setAccountNumber(long accountNumber2);
+
+    public Object getAccountType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAccountType'");
+    }
+
+    protected abstract Object getBalance();
+
+    protected abstract Object getAccountId();
+
+    protected abstract Object getAccountNumber();
 
 }

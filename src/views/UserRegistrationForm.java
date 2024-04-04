@@ -58,6 +58,11 @@ public class UserRegistrationForm extends JFrame {
         String email = emailField.getText();
         String password = new String(passwordField.getPassword());
 
+        // Check if the email is already registered
+        if (UserRegistrationModel.isEmailRegistered(email)) {
+            JOptionPane.showMessageDialog(null, "Email already registered", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         // Inside the action listener for the "Register" button
         String errorMessage = UserRegistrationModel.registerUser(username, email, password);
         if (errorMessage.startsWith("Error")) {

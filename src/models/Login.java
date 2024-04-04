@@ -1,38 +1,38 @@
 package models;
 
+import java.sql.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Login {
-    private static final String QUERY = "SELECT * FROM users WHERE username = ? AND password = ?";
-    private static final String ADMIN_USERNAME = "Celestino";
-    private static final String ADMIN_PASSWORD = "Celestino@Strathmore";
-    private static final String ADMIN_ROLE = "Admin";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/wekeza-db";
+    private static final String DB_USER = "your_username";
+    private static final String DB_PASSWORD = "your_password";
 
-    public String authenticate(String username, String password) {
-        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-            return ADMIN_ROLE; // Admin credentials match
-        }
+    public static String authenticate(String username, String password) {
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             Statement statement = connection.createStatement()) {
 
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(QUERY)) {
-            statement.setString(1, username);
-            statement.setString(2, password);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String role = resultSet.getString("role");
-                    if (ADMIN_ROLE.equals(role)) {
-                        return ADMIN_ROLE;
-                    } else {
-                        return "User";
-                    }
+            // Check if the user exists in the database
+            String query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                String role = resultSet.getString("role");
+                if ("admin".equals(role)) {
+                    return "Admin login successful";
+                } else {
+                    return "User login successful";
                 }
+            } else {
+                // If the user does not exist, prompt them to register
+                return "User not found. Please register.";
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Error: Failed to login. Please try again later.";
         }
-        return "User"; // Default to "User" for normal users
     }
 }

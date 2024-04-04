@@ -1,11 +1,35 @@
 package models;
 
-import java.sql.*;
+//import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DBConnection {
 
-    public Connection con;
+    // JDBC URL, username, and password of MySQL server
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/wekeza-neobank";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "";
+
+    //public Connection con;
+
+    // Method to establish a connection to the MySQL database
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+    }
     
+    // Test the database connection
+    public static void main(String[] args) {
+        try {
+            Connection connection = getConnection();
+            System.out.println("Connected to MySQL database!");
+            connection.close();
+        } catch (SQLException e) {
+            System.err.println("Failed to connect to MySQL database: " + e.getMessage());
+        }
+    }
+    /*
     public static Connection getConnection() {
         try {
 
@@ -21,5 +45,6 @@ public class DBConnection {
         }
         return con;
     }
+    */
     
 }

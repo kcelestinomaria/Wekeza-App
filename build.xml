@@ -10,6 +10,42 @@
 <project name="Wekeza-App" default="default" basedir=".">
     <description>Builds, tests the Wekeza-App.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <!-- Define properties -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="report.dir" value="reports"/>
+
+    <!-- Define classpath -->
+    <path id="classpath">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+            <!-- Include MySQL JDBC driver JAR -->
+            <include name="mysql-connector-java.jar"/>
+            <!-- Include PDFBox Report JAR -->
+            <include name="pdfbox-*.jar"/>
+        </fileset>
+        <pathelement location="build"/>
+    </path>
+
+    <!-- Compile Java source files -->
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath"/>
+    </target>
+
+    <!-- Generate PDF report -->
+    <target name="generate-report" depends="compile">
+        <java classname="PDFReportGenerator" classpathref="classpath">
+            <arg value="${report.dir}/report.pdf"/>
+        </java>
+    </target>
+
+    <!-- Default target -->
+    <target name="build" depends="generate-report"/>
+
+
     <!--
 
     There exist several targets which are by default empty and which can be 

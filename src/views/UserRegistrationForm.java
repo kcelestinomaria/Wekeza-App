@@ -21,6 +21,10 @@ public class UserRegistrationForm extends JFrame {
         setTitle("User Registration");
         setSize(300, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(Color.decode("#FFFFFF")); // Set background color
+
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 2));

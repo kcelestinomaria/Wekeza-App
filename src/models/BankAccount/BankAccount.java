@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 
+//import models.DBConnection;
+
 public abstract class BankAccount {
 
     protected int accountId;
@@ -58,15 +60,43 @@ public abstract class BankAccount {
 
     public abstract boolean deleteAccount();
 
-    public abstract void readAccountDetails();
-
     public abstract boolean saveAccountDetails();
 
+    /*
     // Additional methods
+   // Static method to get account by ID (common for all subclasses)
     public static BankAccount getAccountById(int accountId, String tableName) {
-        // Implementation in child classes
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = DBConnection.getConnection();
+            String query = "SELECT * FROM " + tableName + " WHERE account_id = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, accountId);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                // Create the appropriate subclass instance based on the account type
+                String accountType = resultSet.getString("account_type");
+                switch (accountType) {
+                    case "Standard Bank Account":
+                        return StandardBankAccount.getStandardBankAccountFromResultSet(resultSet);
+                    case "Savings Bank Account":
+                        return SavingsBankAccount.getSavingsBankAccountFromResultSet(resultSet);
+                    case "Investment Bank Account":
+                        return InvestmentBankAccount.getInvestmentBankAccountFromResultSet(resultSet);
+                    default:
+                        return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(resultSet, statement, connection);
+        }
         return null;
     }
+    */
 
     protected static void closeResources(ResultSet resultSet, PreparedStatement statement, Connection con) {
         try {

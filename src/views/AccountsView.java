@@ -10,9 +10,12 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 import models.BankAccount.BankAccount;
 import models.BankAccount.InvestmentBankAccount;
@@ -22,9 +25,13 @@ import models.BankAccount.StandardBankAccount;
 public class AccountsView extends JFrame {
 
     private List<BankAccount> accounts;
+    private DefaultTableModel tableModel;
+    private JTable accountTable;
 
     public AccountsView() {
         accounts = new ArrayList<>();
+        tableModel = new DefaultTableModel();
+        accountTable = new JTable(tableModel);
 
         setTitle("My Bank Accounts");
         setSize(400, 300);
@@ -52,10 +59,10 @@ public class AccountsView extends JFrame {
         panel.add(createSavingsBankAccountButton);
 
         // Combo box for selecting investment type
-        String[] investmentTypes = {"Digital Assets", "Equity", "Government Bond", "Commodities"};
+        String[] investmentTypes = { "Digital Assets", "Equity", "Government Bond", "Commodities" };
         JComboBox<String> investmentTypeComboBox = new JComboBox<>(investmentTypes);
         panel.add(investmentTypeComboBox);
-        
+
         JButton createInvestmentButton = new JButton("Create An Investment Account");
         createInvestmentButton.addActionListener(new ActionListener() {
             @Override
@@ -71,12 +78,26 @@ public class AccountsView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 viewAccounts();
+                updateAccountTable();
             }
         });
         panel.add(viewAccountsButton);
 
         add(panel);
+        add(new JScrollPane(accountTable));
         setVisible(true);
+    }
+
+    private void updateAccountTable() {
+         // Clear previous data
+        tableModel.setRowCount(0);
+
+        // Fetch account details from the database and update the table
+        for (BankAccount account : accounts) {
+            Object[] rowData = {account.getAccountId(), account.getAccountNumber(), 
+                                account.getAccountType(), account.getBalance()};
+            tableModel.addRow(rowData);
+        }
     }
 
     private void createAccount(BankAccount account) {
@@ -84,14 +105,14 @@ public class AccountsView extends JFrame {
         Random random = new Random();
         int accountId = random.nextInt(1000) + 1000; // Random 4-digit number
         long accountNumber = Math.abs(random.nextLong()); // Random positive long number
- 
+
         // Set default starting balance and other variables
         account.setAccountId(accountId);
         account.setAccountNumber(accountNumber);
         account.deposit(10.0); // Starting balance of $10
 
         accounts.add(account);
-        
+
         JOptionPane.showMessageDialog(this, "Account created successfully!\nAccount ID: " + accountId +
                 "\nAccount Number: " + accountNumber, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -116,6 +137,7 @@ public class AccountsView extends JFrame {
             @Override
             public void run() {
                 new AccountsView();
+                //new TransactionView();
             }
         });
     }

@@ -15,6 +15,8 @@ public class HomePage extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null); // Center the window on the screen
+        getContentPane().setBackground(Color.decode("#54e6b6")); // Set background color
+
 
         initComponents();
     }
@@ -23,6 +25,8 @@ public class HomePage extends JFrame {
         titleLabel = new JLabel("Welcome to WEKEZA Neobank App");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setForeground(Color.WHITE); // Set text color
+
 
         loginButton = new JButton("Login");
         registerButton = new JButton("Register");
@@ -30,16 +34,21 @@ public class HomePage extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 // Open the login page
                 LoginView loginView = new LoginView();
                 loginView.setVisible(true);
-                dispose(); // Close the current window
+                //dispose(); // Close the current window
+                dispose();
+                //new AccountsView();
             }
+        
         });
 
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dispose();
                 // Open the registration page
                 UserRegistrationForm userRegistrationForm = new UserRegistrationForm(null);
                 userRegistrationForm.setVisible(true);
@@ -53,6 +62,7 @@ public class HomePage extends JFrame {
 
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.decode("#54e6b6")); // Set background color
         mainPanel.add(titleLabel, BorderLayout.NORTH);
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
 
@@ -65,6 +75,7 @@ public class HomePage extends JFrame {
             public void run() {
                 HomePage homePage = new HomePage();
                 homePage.setVisible(true);
+                new AccountsView();
             }
         });
     }

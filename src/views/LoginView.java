@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import models.Login;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,6 +22,9 @@ public class LoginView extends JFrame {
         setSize(300, 150);
         setResizable(false);
         setLocationRelativeTo(null);
+
+        getContentPane().setBackground(Color.decode("#FFFFFF")); // Set background color
+
 
         JPanel panel = new JPanel();
         panel.setLayout(null);

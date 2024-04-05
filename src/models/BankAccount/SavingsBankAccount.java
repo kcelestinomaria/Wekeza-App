@@ -97,7 +97,8 @@ public class SavingsBankAccount extends BankAccount {
         return null;
     }
 
-    public boolean saveAccount() {
+    @Override
+    public boolean saveAccountDetails() {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
@@ -136,5 +137,7 @@ public class SavingsBankAccount extends BankAccount {
         }
         return false;
     }
+
+   
 
 }
